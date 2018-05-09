@@ -6,5 +6,8 @@ namespace Ex03.GarageLogic
 {
     class Viechale
     {
+        private int x = 1;
+
+
     }
 }
