@@ -57,11 +57,11 @@ namespace Ex03.GarageLogic
             {
                 try 
                 {
-                    m_CurrentAirPressure += i_MountToInflate;
+                    m_CurrentAirPressure += i_MountToInflate; //TODO make sure this Exception works as expected.
                 }
                 catch(ValueOutOfRangeException)
                 {
-                    throw new ValueOutOfRangeException();
+                    throw new ValueOutOfRangeException(0, m_MaxAirPressure);
                 }
             }
         }
