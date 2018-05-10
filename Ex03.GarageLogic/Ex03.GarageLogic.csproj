@@ -35,14 +35,14 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="IFeulable.cs" />
     <Compile Include="FuelCar.cs" />
     <Compile Include="FuelMotorcycle.cs" />
     <Compile Include="FuelTruck.cs" />
-    <Compile Include="FuelViechale.cs" />
-    <Compile Include="GasCar.cs" />
-    <Compile Include="GasMotorcycle.cs" />
-    <Compile Include="GasViechale.cs" />
-    <Compile Include="Viechale.cs" />
+    <Compile Include="ElectricCar.cs" />
+    <Compile Include="ElectricMotorcycle.cs" />
+    <Compile Include="IElectricable.cs" />
+    <Compile Include="Vehicle.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

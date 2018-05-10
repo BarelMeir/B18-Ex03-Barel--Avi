@@ -5,6 +5,12 @@ using System.Text;
 
 namespace Ex03.GarageLogic
 {
+    public enum eEnergyType
+    {
+        Octan96,
+        Octan98,
+        Electric
+    }
 
     public enum eRepairStatus
     {
@@ -13,7 +19,7 @@ namespace Ex03.GarageLogic
         Paid
     }
 
-    public class Viechale
+    public class Vehicle
     {
         private class Wheel
         {
@@ -55,6 +61,7 @@ namespace Ex03.GarageLogic
         private string m_ModelName;
         private string m_LicenseNumber;
         private float m_EnergyLeftPrecentage;
+        private float m_MaxEnergyCapacity;
         private LinkedList<Wheel> m_Wheels;
         private eRepairStatus m_RepairStatus;
 
@@ -74,6 +81,12 @@ namespace Ex03.GarageLogic
         {
             get { return m_EnergyLeftPrecentage; }
             set { m_EnergyLeftPrecentage = value; }
+        }
+
+        public float MaxEnergyCapacity
+        {
+            get { return m_MaxEnergyCapacity; }
+            set { m_MaxEnergyCapacity = value; }
         }
 
         public eRepairStatus RepairStatus

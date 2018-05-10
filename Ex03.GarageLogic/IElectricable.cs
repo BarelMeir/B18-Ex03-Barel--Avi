@@ -4,7 +4,8 @@ using System.Text;
 
 namespace Ex03.GarageLogic
 {
-    class GasMotorcycle
+    interface IElectricable
     {
+        void Charge(float i_AmountToAdd);
     }
 }
