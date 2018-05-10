@@ -5,27 +5,35 @@ using System.Text;
 
 namespace Ex03.GarageLogic
 {
-    public enum eEnergyType
-    {
-        Octan96,
-        Octan98,
-        Electric
-    }
 
-    public enum eRepairStatus
+    public abstract class Vehicle
     {
-        InProgress,
-        Completed,
-        Paid
-    }
+        public enum eEnergyType
+        {
+            Octan96,
+            Octan98,
+            Electric
+        }
 
-    public class Vehicle
-    {
+        public enum eRepairStatus
+        {
+            InProgress,
+            Completed,
+            Paid
+        }
+
         private class Wheel
         {
             private string m_ManufactorName;
             private float m_CurrentAirPressure;
             private float m_MaxAirPressure;
+
+            internal Wheel(string i_ManufactorName, float i_CurrentAirPressure, float i_MaxAirPressure)
+            {
+                m_ManufactorName = i_ManufactorName;
+                m_CurrentAirPressure = i_CurrentAirPressure;
+                m_MaxAirPressure = i_MaxAirPressure;
+            }
 
             public string ManufactorName
             {
@@ -47,13 +55,13 @@ namespace Ex03.GarageLogic
 
             internal void Inflate(float i_MountToInflate)
             {
-                if (m_CurrentAirPressure + i_MountToInflate <= m_MaxAirPressure)
+                try 
                 {
                     m_CurrentAirPressure += i_MountToInflate;
                 }
-                else
+                catch(ValueOutOfRangeException)
                 {
-                    // TODO exeption
+                    throw new ValueOutOfRangeException();
                 }
             }
         }
@@ -64,6 +72,27 @@ namespace Ex03.GarageLogic
         private float m_MaxEnergyCapacity;
         private LinkedList<Wheel> m_Wheels;
         private eRepairStatus m_RepairStatus;
+        private eEnergyType m_EnergyType;
+
+        internal Vehicle(string i_ModelName, string i_LicenseNumber, float i_EnergyLeftPrecentage, float i_MaxEnergyCapacity)
+        {
+            try
+            {
+                m_ModelName = i_ModelName;
+                m_LicenseNumber = i_LicenseNumber;
+                m_EnergyLeftPrecentage = i_EnergyLeftPrecentage;
+                m_MaxEnergyCapacity = i_MaxEnergyCapacity;
+                // TODO ADD WHEELS LIST 
+            }
+            catch (FormatException exception)
+            {
+                throw new FormatException(exception.Message);
+            }
+            catch (ArgumentException exception)
+            {
+                throw new ArgumentException(exception.Message);
+            }
+        }
 
         public string ModelName
         {
