@@ -8,7 +8,7 @@ namespace Ex03.GarageLogic
     {
         public void AddFuel(eEnergyType i_EnergyType, float i_AmountToAdd)
         {
-            int a = 1;
+
         }
     }
 }

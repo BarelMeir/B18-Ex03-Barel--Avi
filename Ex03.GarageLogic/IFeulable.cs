@@ -6,6 +6,6 @@ namespace Ex03.GarageLogic
 {
     interface IFeulable
     {
-        void AddFuel(Vehicle.eEnergyType i_EnergyType, float i_AmountToAdd);
+        void AddFuel(eEnergyType i_EnergyType, float i_AmountToAdd);
     }
 }

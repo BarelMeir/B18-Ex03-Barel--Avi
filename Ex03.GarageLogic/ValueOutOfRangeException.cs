@@ -9,7 +9,7 @@ namespace Ex03.GarageLogic
         private float m_MaxValue;
         private float m_MinValue;
 
-        public ValueOutOfRangeException(float i_MinValue, float i_MaxValue)
+        public ValueOutOfRangeException(float i_MaxValue, float i_MinValue)
 
             : base(
                 string.Format("Invalid value range: minimal value possible is: {0} , and maximal value possible is {1}", i_MinValue, i_MaxValue))
