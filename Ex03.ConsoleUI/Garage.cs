@@ -35,7 +35,8 @@ namespace Ex03.ConsoleUI
 
         private void addVehicle()
         {
-
+            List<object> parametersListForFactory = new List<object>();
+            Client newClient = new Client();
         }
 
     }

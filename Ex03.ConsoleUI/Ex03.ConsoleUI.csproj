@@ -34,6 +34,7 @@
   <ItemGroup>
     <Compile Include="Garage.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="UserInterface.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

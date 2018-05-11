@@ -11,5 +11,19 @@ namespace Ex03.GarageLogic
         private Vehicle.eRepairStatus m_RepairStatus;
         private Vehicle m_ClientVehicle;
         private Vehicle.eVehicleType m_ClientVehicleType;
+
+        public Client(string i_Name, string i_PhoneNumber)
+        {
+            try
+            {
+                m_Name = i_Name;
+                m_PhoneNumber = i_PhoneNumber;
+                m_RepairStatus = Vehicle.eRepairStatus.InProgress;
+            }
+            catch (FormatException e)
+            {
+                throw e;
+            }
+        }
     }
 }
