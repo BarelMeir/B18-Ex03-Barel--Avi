@@ -4,15 +4,24 @@ using System.Text;
 
 namespace Ex03.GarageLogic
 {
-    class FuelTruck : Vehicle
+    class FuelTruck : Vehicle, IFuelable
     {
         private bool m_IsToxic;
         private float m_MaxWeight;
 
-        internal FuelTruck(string i_ModelName, string i_LicenseNumber, float i_EnergyLeftPrecentage, float i_MaxEnergyCapacity, bool i_IsToxic, float i_MaxWeight) : base(i_ModelName, i_LicenseNumber, i_EnergyLeftPrecentage, i_MaxEnergyCapacity)
+        internal FuelTruck(string i_ModelName, string i_LicenseNumber, float i_CurrentEnergy, float i_MaxEnergyCapacity,
+            eEnergyType i_EnergyType, LinkedList<Wheel> i_Wheels, bool i_IsToxic, float i_MaxWeight) : base(i_ModelName,
+            i_LicenseNumber, i_CurrentEnergy, i_MaxEnergyCapacity, i_EnergyType, i_Wheels, eVehicleType.FueledTruck)
         {
-            m_IsToxic = i_IsToxic;
-            m_MaxWeight = i_MaxEnergyCapacity;
+            try
+            {
+                m_IsToxic = i_IsToxic;
+                m_MaxWeight = i_MaxEnergyCapacity;
+            }
+            catch (FormatException exception)
+            {
+                throw exception;
+            }
         }
 
         public bool IsToxic
@@ -27,11 +36,16 @@ namespace Ex03.GarageLogic
             set { m_MaxWeight = value; }
         }
 
-        public void AddFuel(eEnergyType i_EnergyType, float i_AmountToAdd)
+        public void AddFuel(eEnergyType io_EnergyType, float i_AmountToAdd)
         {
-            int a = 1;
-            wce
+            try
+            {
+                AddEnergy(io_EnergyType, i_AmountToAdd);
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
         }
-
     }
 }

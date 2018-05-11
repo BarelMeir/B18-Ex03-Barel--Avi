@@ -8,6 +8,15 @@ namespace Ex03.GarageLogic
 
     public abstract class Vehicle
     {
+        public enum eVehicleType
+        {
+            ElectricCar,
+            ElectricMotorcycle,
+            FueledCar,
+            FueledMotorcycle,
+            FueledTruck
+        }
+
         public enum eEnergyType
         {
             Octan96,
@@ -22,7 +31,7 @@ namespace Ex03.GarageLogic
             Paid
         }
 
-        private class Wheel
+        public class Wheel
         {
             private string m_ManufactorName;
             private float m_CurrentAirPressure;
@@ -55,42 +64,42 @@ namespace Ex03.GarageLogic
 
             internal void Inflate(float i_MountToInflate)
             {
-                try 
-                {
-                    m_CurrentAirPressure += i_MountToInflate; //TODO make sure this Exception works as expected.
-                }
-                catch(ValueOutOfRangeException)
+                if (m_CurrentAirPressure + i_MountToInflate > MaxAirPressure)
                 {
                     throw new ValueOutOfRangeException(0, m_MaxAirPressure);
                 }
+
+                m_CurrentAirPressure += i_MountToInflate; //TODO make sure this Exception works as expected.
             }
         }
 
         private string m_ModelName;
         private string m_LicenseNumber;
         private float m_EnergyLeftPrecentage;
+        private float m_CurrentEnergy;
         private float m_MaxEnergyCapacity;
         private LinkedList<Wheel> m_Wheels;
         private eRepairStatus m_RepairStatus;
         private eEnergyType m_EnergyType;
+        private eVehicleType m_VehicleType;
 
-        internal Vehicle(string i_ModelName, string i_LicenseNumber, float i_EnergyLeftPrecentage, float i_MaxEnergyCapacity)
+        internal Vehicle(string i_ModelName, string i_LicenseNumber, float i_CurrentEnergy, float i_MaxEnergyCapacity, eEnergyType i_EnergyType, LinkedList<Wheel> i_Wheels, eVehicleType i_VehicleType)
         {
             try
             {
                 m_ModelName = i_ModelName;
                 m_LicenseNumber = i_LicenseNumber;
-                m_EnergyLeftPrecentage = i_EnergyLeftPrecentage;
+                m_CurrentEnergy = i_CurrentEnergy;
                 m_MaxEnergyCapacity = i_MaxEnergyCapacity;
-                // TODO ADD WHEELS LIST 
+                m_Wheels = i_Wheels;
+                m_EnergyType = i_EnergyType;
+                m_RepairStatus = eRepairStatus.InProgress;
+                m_EnergyLeftPrecentage = m_CurrentEnergy / m_MaxEnergyCapacity;
+                m_VehicleType = i_VehicleType;
             }
             catch (FormatException exception)
             {
-                throw new FormatException(exception.Message);
-            }
-            catch (ArgumentException exception)
-            {
-                throw new ArgumentException(exception.Message);
+                throw exception;
             }
         }
 
@@ -112,6 +121,12 @@ namespace Ex03.GarageLogic
             set { m_EnergyLeftPrecentage = value; }
         }
 
+        public float CurrentEnergy
+        {
+            get { return m_CurrentEnergy; }
+            set { m_CurrentEnergy = value; }
+        }
+
         public float MaxEnergyCapacity
         {
             get { return m_MaxEnergyCapacity; }
@@ -130,6 +145,29 @@ namespace Ex03.GarageLogic
             {
                 currentWheel.Inflate(io_MountToInflate);
             }
+        }
+
+        public void AddEnergy(eEnergyType i_EnergyType, float i_AmountToAdd)
+        {
+            if (m_EnergyType != i_EnergyType)
+            {
+                throw new ArgumentException();
+            }
+
+            if (m_CurrentEnergy + i_AmountToAdd > m_MaxEnergyCapacity)
+            {
+                throw new ValueOutOfRangeException(0, m_MaxEnergyCapacity);
+            }
+
+            try
+            {
+                m_CurrentEnergy += i_AmountToAdd;
+            }
+            catch (FormatException exception)
+            {
+                throw exception;
+            }
+            
         }
 
     }
