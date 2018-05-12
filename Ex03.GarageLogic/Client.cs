@@ -22,7 +22,7 @@ namespace Ex03.GarageLogic
                 m_PhoneNumber = i_PhoneNumber;
                 m_VehicleType = (Vehicle.eVehicleType)io_ParametersList[0]; 
                 m_RepairStatus = Vehicle.eRepairStatus.InProgress;
-                m_Vehicle = Factory.AddVehicle(io_ParametersList);
+                m_Vehicle = Factory.MakeVehicle(io_ParametersList);
             }
             catch (FormatException e)
             {

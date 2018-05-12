@@ -11,7 +11,7 @@ namespace Ex03.ConsoleUI
 
         public void GarageManager()
         {
-            bool continueFlag = true;
+            bool stayInSystem = true;
             string mainMenuUserInputStr;
             int maimMenuUserInput;
             string message = string.Format(
@@ -25,7 +25,7 @@ namespace Ex03.ConsoleUI
 7. Display a specific vehicle details.
 0. Exit the system.");
 
-            while (continueFlag == true)
+            while (stayInSystem)
             {
                 Console.WriteLine(message);
                 mainMenuUserInputStr = Console.ReadLine();
@@ -54,7 +54,7 @@ namespace Ex03.ConsoleUI
                     displayDataOfSpecificVehicle(newGarage);
                     break;
                     case 0:
-                    continueFlag = false;
+                    stayInSystem = false;
                     exitMode();
                     break;
                 }

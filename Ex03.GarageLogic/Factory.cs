@@ -7,7 +7,7 @@ namespace Ex03.GarageLogic
 {
     public class Factory
     {
-        internal static Vehicle AddVehicle(List<object> io_ParametersList)
+        internal static Vehicle MakeVehicle(List<object> io_ParametersList)
         {
             // list order : 0. vehicleType ; 1. i_lisence number ; 2. modelName ; 3. energyLeft ;  4. maxEnergy ; 5. <wheels> ; 6. unique param one. ; 7. unique param two.
             Vehicle newVehicle;
