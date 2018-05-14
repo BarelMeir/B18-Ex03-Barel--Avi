@@ -75,26 +75,26 @@ namespace Ex03.GarageLogic
 
         private string m_ModelName;
         private string m_LicenseNumber;
-        private float m_EnergyLeftPrecentage;
+/*        private float m_EnergyLeftPrecentage;
         private float m_CurrentEnergy;
-        private float m_MaxEnergyCapacity;
+        private float m_MaxEnergyCapacity;*/
         private LinkedList<Wheel> m_Wheels;
         private eRepairStatus m_RepairStatus;
         private eEnergyType m_EnergyType;
         private eVehicleType m_VehicleType;
 
-        internal Vehicle(string i_ModelName, string i_LicenseNumber, float i_CurrentEnergy, float i_MaxEnergyCapacity, eEnergyType i_EnergyType, LinkedList<Wheel> i_Wheels, eVehicleType i_VehicleType)
+        internal Vehicle(string i_ModelName, string i_LicenseNumber, float i_CurrentEnergy, eEnergyType i_EnergyType, LinkedList<Wheel> i_Wheels, eVehicleType i_VehicleType)
         {
             try
             {
                 m_ModelName = i_ModelName;
                 m_LicenseNumber = i_LicenseNumber;
-                m_CurrentEnergy = i_CurrentEnergy;
-                m_MaxEnergyCapacity = i_MaxEnergyCapacity;
+           /*     m_CurrentEnergy = i_CurrentEnergy;
+                m_MaxEnergyCapacity = i_MaxEnergyCapacity;*/
                 m_Wheels = i_Wheels;
                 m_EnergyType = i_EnergyType;
                 m_RepairStatus = eRepairStatus.InProgress;
-                m_EnergyLeftPrecentage = m_CurrentEnergy / m_MaxEnergyCapacity;
+              //  m_EnergyLeftPrecentage = m_CurrentEnergy / m_MaxEnergyCapacity;
                 m_VehicleType = i_VehicleType;
             }
             catch (FormatException exception)

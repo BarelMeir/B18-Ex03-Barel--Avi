@@ -7,15 +7,12 @@ namespace Ex03.GarageLogic
 {
     public class Factory
     {
-        internal static Vehicle MakeVehicle(List<object> io_ParametersList)
+        internal static Vehicle MakeVehicle(Vehicle.eVehicleType io_VehicltType)
         {
-            // list order : 0. vehicleType ; 1. i_lisence number ; 2. modelName ; 3. energyLeft ;  4. maxEnergy ; 5. <wheels> ; 6. unique param one. ; 7. unique param two.
             Vehicle newVehicle;
             try
             {
-                Vehicle.eVehicleType vehicleType = (Vehicle.eVehicleType) io_ParametersList[0];
-
-                switch (vehicleType)
+                switch (io_VehicltType)
                 {
                     case Vehicle.eVehicleType.ElectricCar:
                         newVehicle = makeElectricCar(io_ParametersList);
@@ -128,7 +125,7 @@ namespace Ex03.GarageLogic
             }
         }
 
-        private static FuelTruck makeFueledTruck(List<object> io_ParametersList)
+        private static Truck makeFueledTruck(List<object> io_ParametersList)
         {
             // list order : 0. vehicleType ; 1. i_lisence number ; 2. modelName ; 3. energyLeft ;  4. maxEnergy ; 5. <wheels> ; 6. unique param one. ; 7. unique param two.
             try
@@ -141,7 +138,7 @@ namespace Ex03.GarageLogic
                 bool isToxic = (bool)io_ParametersList[6];
                 float maxWehight = (float)io_ParametersList[7];
 
-                return new FuelTruck(modelName, lisenceNumber, currentEnergy, maxEnergy, Vehicle.eEnergyType.Electric, wheels, isToxic, maxWehight);
+                return new Truck(modelName, lisenceNumber, currentEnergy, maxEnergy, Vehicle.eEnergyType.Electric, wheels, isToxic, maxWehight);
             }
             catch (Exception exception)
             {

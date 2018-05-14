@@ -17,8 +17,8 @@ namespace Ex03.GarageLogic
         private eCarColor m_CarColor;
         private int m_DoorsAmount;
 
-        internal Car(string i_ModelName, string i_LicenseNumber, float i_CurrentEnergy, float i_MaxEnergyCapacity, eEnergyType i_EnergyType, LinkedList<Wheel> i_Wheels,
-            eVehicleType i_VehicleType, eCarColor i_CarColor, int i_DoorsAmount) : base(i_ModelName, i_LicenseNumber, i_CurrentEnergy, i_MaxEnergyCapacity, i_EnergyType, i_Wheels, i_VehicleType)
+        internal Car(string i_ModelName, string i_LicenseNumber, float i_CurrentEnergy, eEnergyType i_EnergyType, LinkedList<Wheel> i_Wheels,
+            eCarColor i_CarColor, int i_DoorsAmount) : base(i_ModelName, i_LicenseNumber, i_CurrentEnergy, i_EnergyType, i_Wheels)
         {
             if (i_DoorsAmount < 2 || i_DoorsAmount > 5)
             {

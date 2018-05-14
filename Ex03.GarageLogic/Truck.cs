@@ -4,12 +4,12 @@ using System.Text;
 
 namespace Ex03.GarageLogic
 {
-    class FuelTruck : Vehicle, IFuelable
+    class Truck : Vehicle
     {
         private bool m_IsToxic;
         private float m_MaxWeight;
 
-        internal FuelTruck(string i_ModelName, string i_LicenseNumber, float i_CurrentEnergy, float i_MaxEnergyCapacity,
+        internal Truck(string i_ModelName, string i_LicenseNumber, float i_CurrentEnergy, float i_MaxEnergyCapacity,
             eEnergyType i_EnergyType, LinkedList<Wheel> i_Wheels, bool i_IsToxic, float i_MaxWeight) : base(i_ModelName,
             i_LicenseNumber, i_CurrentEnergy, i_MaxEnergyCapacity, i_EnergyType, i_Wheels, eVehicleType.FueledTruck)
         {
