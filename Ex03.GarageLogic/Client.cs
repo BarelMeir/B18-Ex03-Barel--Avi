@@ -12,17 +12,22 @@ namespace Ex03.GarageLogic
         private Vehicle m_Vehicle;
         private Vehicle.eVehicleType m_VehicleType;
 
-        public Client(string i_Name, string i_PhoneNumber, Vehicle.eVehicleType io_VehicleType)
+        public Client(string i_ClientName, string i_ClientPhoneNumber, string io_ModelName,
+            string io_LicenseNumber, Vehicle.eVehicleType io_VehicleType, List<Vehicle.Wheel> io_Wheels,
+            Engine.eEngineType io_EngineType, float ioEenergyLeft,
+            List<object> io_UniqueParametersList)
         {
-            // list order : 0. vehicleType ; 1. i_lisence number ; 2. modelName ; 3. energyLeft ;  4. maxEnergy ; 5. <wheels> ; 6. unique param one. ; 7. unique param two.
             try
             {
                 // set local fields
-                m_Name = i_Name;
-                m_PhoneNumber = i_PhoneNumber;
+                m_Name = i_ClientName;
+                m_PhoneNumber = i_ClientPhoneNumber;
                 m_VehicleType = io_VehicleType;
                 m_RepairStatus = Vehicle.eRepairStatus.InProgress;
-                m_Vehicle = Factory.MakeVehicle(io_VehicleType);
+                m_Vehicle = Factory.MakeVehicle(io_ModelName,
+                    io_LicenseNumber, io_VehicleType, io_Wheels,
+                    io_EngineType, ioEenergyLeft,
+                    io_UniqueParametersList);
             }
             catch (FormatException e)
             {

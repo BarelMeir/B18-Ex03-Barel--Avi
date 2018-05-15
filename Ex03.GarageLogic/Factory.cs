@@ -7,27 +7,33 @@ namespace Ex03.GarageLogic
 {
     public class Factory
     {
-        internal static Vehicle MakeVehicle(Vehicle.eVehicleType io_VehicltType)
+        internal static Vehicle MakeVehicle(string io_ModelName,
+            string io_LicenseNumber, Vehicle.eVehicleType io_VehicleType, List<Vehicle.Wheel> io_Wheels,
+            Engine.eEngineType io_EngineType, float ioEenergyLeft,
+            List<object> io_UniqueParametersList)
         {
             Vehicle newVehicle;
             try
             {
-                switch (io_VehicltType)
+                switch (io_VehicleType)
                 {
-                    case Vehicle.eVehicleType.ElectricCar:
-                        newVehicle = makeElectricCar(io_ParametersList);
+                    case Vehicle.eVehicleType.Car:
+                        newVehicle = makeCar(io_ModelName,
+                            io_LicenseNumber, io_Wheels,
+                            io_EngineType, ioEenergyLeft,
+                            io_UniqueParametersList);
                         break;
-                    case Vehicle.eVehicleType.ElectricMotorcycle:
-                        newVehicle = makeElectricMotorcycle(io_ParametersList);
+                    case Vehicle.eVehicleType.Motorcycle:
+                        newVehicle = makeMotorcycle(io_ModelName,
+                            io_LicenseNumber, io_Wheels,
+                            io_EngineType, ioEenergyLeft,
+                            io_UniqueParametersList); 
                         break;
-                    case Vehicle.eVehicleType.FueledCar:
-                        newVehicle = makeFueledCar(io_ParametersList);
-                        break;
-                    case Vehicle.eVehicleType.FueledMotorcycle:
-                        newVehicle = makeFueledMotorcycle(io_ParametersList);
-                        break;
-                    case Vehicle.eVehicleType.FueledTruck:
-                        newVehicle = makeFueledTruck(io_ParametersList);
+                    case Vehicle.eVehicleType.Truck:
+                        newVehicle = makeTruck(io_ModelName,
+                            io_LicenseNumber, io_Wheels,
+                            io_EngineType, ioEenergyLeft,
+                            io_UniqueParametersList);
                         break;
                     default:
                         throw new ArgumentException();
@@ -41,20 +47,17 @@ namespace Ex03.GarageLogic
             }
         }
 
-        private static ElectricCar makeElectricCar(List<object> io_ParametersList)
+        private static Car makeCar(string io_ModelName,
+            string io_LicenseNumber, List<Vehicle.Wheel> io_Wheels,
+            Engine.eEngineType io_EngineType, float ioEenergyLeft,
+            List<object> io_UniqueParametersList)
         {
-            // list order : 0. vehicleType ; 1. i_lisence number ; 2. modelName ; 3. energyLeft ;  4. maxEnergy ; 5. <wheels> ; 6. unique param one. ; 7. unique param two.
             try
             {
-                string modelName = (string) io_ParametersList[1];
-                string lisenceNumber = (string)io_ParametersList[2];
-                float currentEnergy = (float)io_ParametersList[3];
-                float maxEnergy = (float)io_ParametersList[4];
-                LinkedList<Vehicle.Wheel> wheels = (LinkedList<Vehicle.Wheel>) io_ParametersList[5];
-                Car.eCarColor carColor = (Car.eCarColor) io_ParametersList[6];
-                int doorsAmount = (int) io_ParametersList[7];
-
-                return new ElectricCar(modelName, lisenceNumber, currentEnergy, maxEnergy, Vehicle.eEnergyType.Electric, wheels, carColor, doorsAmount);
+                return new Car(io_ModelName,
+                    io_LicenseNumber, io_Wheels,
+                    io_EngineType, ioEenergyLeft,
+                    io_UniqueParametersList);
             }
             catch (Exception exception)
             {
@@ -62,20 +65,17 @@ namespace Ex03.GarageLogic
             }
         }
 
-        private static ElectricMotorcycle makeElectricMotorcycle(List<object> io_ParametersList)
+        private static Motorcycle makeMotorcycle(string io_ModelName,
+            string io_LicenseNumber, List<Vehicle.Wheel> io_Wheels,
+            Engine.eEngineType io_EngineType, float ioEenergyLeft,
+            List<object> io_UniqueParametersList)
         {
-            // list order : 0. vehicleType ; 1. i_lisence number ; 2. modelName ; 3. energyLeft ;  4. maxEnergy ; 5. <wheels> ; 6. unique param one. ; 7. unique param two.
             try
             {
-                string modelName = (string)io_ParametersList[1];
-                string lisenceNumber = (string)io_ParametersList[2];
-                float currentEnergy = (float)io_ParametersList[3];
-                float maxEnergy = (float)io_ParametersList[4];
-                LinkedList<Vehicle.Wheel> wheels = (LinkedList<Vehicle.Wheel>)io_ParametersList[5];
-                MotorCycle.eLicenseType licenseType = (MotorCycle.eLicenseType)io_ParametersList[6];
-                int motorVolume = (int)io_ParametersList[7];
-
-                return new ElectricMotorcycle(modelName, lisenceNumber, currentEnergy, maxEnergy, Vehicle.eEnergyType.Electric, wheels, licenseType, motorVolume);
+                return new Motorcycle(io_ModelName,
+                    io_LicenseNumber, io_Wheels,
+                    io_EngineType, ioEenergyLeft,
+                    io_UniqueParametersList);
             }
             catch (Exception exception)
             {
@@ -83,62 +83,17 @@ namespace Ex03.GarageLogic
             }
         }
 
-        private static FuelCar makeFueledCar(List<object> io_ParametersList)
+        private static Truck makeTruck(string io_ModelName,
+            string io_LicenseNumber, List<Vehicle.Wheel> io_Wheels,
+            Engine.eEngineType io_EngineType, float ioEenergyLeft,
+            List<object> io_UniqueParametersList)
         {
-            // list order : 0. vehicleType ; 1. i_lisence number ; 2. modelName ; 3. energyLeft ;  4. maxEnergy ; 5. <wheels> ; 6. unique param one. ; 7. unique param two.
             try
             {
-                string modelName = (string)io_ParametersList[1];
-                string lisenceNumber = (string)io_ParametersList[2];
-                float currentEnergy = (float)io_ParametersList[3];
-                float maxEnergy = (float)io_ParametersList[4];
-                LinkedList<Vehicle.Wheel> wheels = (LinkedList<Vehicle.Wheel>)io_ParametersList[5];
-                Car.eCarColor carColor = (Car.eCarColor)io_ParametersList[6];
-                int doorsAmount = (int)io_ParametersList[7];
-
-                return new FuelCar(modelName, lisenceNumber, currentEnergy, maxEnergy, Vehicle.eEnergyType.Octan98, wheels, carColor, doorsAmount);
-            }
-            catch (Exception exception)
-            {
-                throw exception;
-            }
-        }
-
-        private static FuelMotorcycle makeFueledMotorcycle(List<object> io_ParametersList)
-        {
-            // list order : 0. vehicleType ; 1. i_lisence number ; 2. modelName ; 3. energyLeft ;  4. maxEnergy ; 5. <wheels> ; 6. unique param one. ; 7. unique param two.
-            try
-            {
-                string modelName = (string)io_ParametersList[1];
-                string lisenceNumber = (string)io_ParametersList[2];
-                float currentEnergy = (float)io_ParametersList[3];
-                float maxEnergy = (float)io_ParametersList[4];
-                LinkedList<Vehicle.Wheel> wheels = (LinkedList<Vehicle.Wheel>)io_ParametersList[5];
-                MotorCycle.eLicenseType licenseType = (MotorCycle.eLicenseType)io_ParametersList[6];
-                int motorVolume = (int)io_ParametersList[7];
-
-                return new FuelMotorcycle(modelName, lisenceNumber, currentEnergy, maxEnergy, Vehicle.eEnergyType.Octan96, wheels, licenseType, motorVolume);
-            }
-            catch (Exception exception)
-            {
-                throw exception;
-            }
-        }
-
-        private static Truck makeFueledTruck(List<object> io_ParametersList)
-        {
-            // list order : 0. vehicleType ; 1. i_lisence number ; 2. modelName ; 3. energyLeft ;  4. maxEnergy ; 5. <wheels> ; 6. unique param one. ; 7. unique param two.
-            try
-            {
-                string modelName = (string)io_ParametersList[1];
-                string lisenceNumber = (string)io_ParametersList[2];
-                float currentEnergy = (float)io_ParametersList[3];
-                float maxEnergy = (float)io_ParametersList[4];
-                LinkedList<Vehicle.Wheel> wheels = (LinkedList<Vehicle.Wheel>)io_ParametersList[5];
-                bool isToxic = (bool)io_ParametersList[6];
-                float maxWehight = (float)io_ParametersList[7];
-
-                return new Truck(modelName, lisenceNumber, currentEnergy, maxEnergy, Vehicle.eEnergyType.Electric, wheels, isToxic, maxWehight);
+                return new Truck(io_ModelName,
+                    io_LicenseNumber, io_Wheels,
+                    io_EngineType, ioEenergyLeft,
+                    io_UniqueParametersList);
             }
             catch (Exception exception)
             {

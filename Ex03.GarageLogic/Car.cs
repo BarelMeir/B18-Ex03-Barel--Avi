@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Ex03.GarageLogic
 {
-    public abstract class Car : Vehicle
+    public class Car : Vehicle
     {
         public enum eCarColor
         {
@@ -17,18 +17,20 @@ namespace Ex03.GarageLogic
         private eCarColor m_CarColor;
         private int m_DoorsAmount;
 
-        internal Car(string i_ModelName, string i_LicenseNumber, float i_CurrentEnergy, eEnergyType i_EnergyType, LinkedList<Wheel> i_Wheels,
-            eCarColor i_CarColor, int i_DoorsAmount) : base(i_ModelName, i_LicenseNumber, i_CurrentEnergy, i_EnergyType, i_Wheels)
+        internal Car(string io_ModelName,
+            string io_LicenseNumber, List<Wheel> io_Wheels,
+            Engine.eEngineType io_EngineType, float io_EenergyLeft,
+            List<object> io_UniqueParametersList) : base(io_ModelName, io_LicenseNumber, io_Wheels, io_EngineType, io_EenergyLeft, eVehicleType.Car)
         {
-            if (i_DoorsAmount < 2 || i_DoorsAmount > 5)
-            {
-                throw new ValueOutOfRangeException(2, 5);
-            }
-
             try
             {
-                m_CarColor = i_CarColor;
-                m_DoorsAmount = i_DoorsAmount;
+                m_CarColor = (eCarColor)io_UniqueParametersList[0];
+                m_DoorsAmount = (int)io_UniqueParametersList[1]; ;
+
+                if (m_DoorsAmount < 2 || m_DoorsAmount > 5)
+                {
+                    throw new ValueOutOfRangeException(2, 5);
+                }
             }
             catch (FormatException exception)
             {
@@ -47,3 +49,4 @@ namespace Ex03.GarageLogic
         }
     }
 }
+

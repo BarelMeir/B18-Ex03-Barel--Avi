@@ -4,19 +4,25 @@ using System.Text;
 
 namespace Ex03.GarageLogic
 {
-    class Truck : Vehicle
+    public class Truck : Vehicle
     {
         private bool m_IsToxic;
         private float m_MaxWeight;
 
-        internal Truck(string i_ModelName, string i_LicenseNumber, float i_CurrentEnergy, float i_MaxEnergyCapacity,
-            eEnergyType i_EnergyType, LinkedList<Wheel> i_Wheels, bool i_IsToxic, float i_MaxWeight) : base(i_ModelName,
-            i_LicenseNumber, i_CurrentEnergy, i_MaxEnergyCapacity, i_EnergyType, i_Wheels, eVehicleType.FueledTruck)
+        internal Truck(string io_ModelName,
+            string io_LicenseNumber, List<Wheel> io_Wheels,
+            Engine.eEngineType io_EngineType, float io_EenergyLeft,
+            List<object> io_UniqueParametersList) : base(io_ModelName, io_LicenseNumber, io_Wheels, io_EngineType, io_EenergyLeft, eVehicleType.Car)
         {
             try
             {
-                m_IsToxic = i_IsToxic;
-                m_MaxWeight = i_MaxEnergyCapacity;
+                m_IsToxic = (bool)io_UniqueParametersList[0];
+                m_MaxWeight = (float)io_UniqueParametersList[1];
+
+                if (m_MaxWeight <=0 )
+                {
+                    throw new ValueOutOfRangeException(1,int.MaxValue);
+                }
             }
             catch (FormatException exception)
             {
@@ -36,7 +42,7 @@ namespace Ex03.GarageLogic
             set { m_MaxWeight = value; }
         }
 
-        public void AddFuel(eEnergyType io_EnergyType, float i_AmountToAdd)
+        public void AddFuel(Engine.eEnergyType io_EnergyType, float i_AmountToAdd)
         {
             try
             {

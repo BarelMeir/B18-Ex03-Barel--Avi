@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Ex03.GarageLogic
 {
-    public abstract class MotorCycle : Vehicle
+    public class Motorcycle : Vehicle
     {
         public enum eLicenseType
         {
@@ -18,18 +18,20 @@ namespace Ex03.GarageLogic
         private eLicenseType m_LicenseType;
         private int m_MotorVolume;
 
-        internal MotorCycle(string i_ModelName, string i_LicenseNumber, float i_CurrentEnergy, float i_MaxEnergyCapacity, eEnergyType i_EnergyType, LinkedList<Wheel> i_Wheels,
-            eVehicleType i_VehicleType, eLicenseType i_LicenseType, int i_MotorVolume) : base(i_ModelName, i_LicenseNumber, i_CurrentEnergy, i_MaxEnergyCapacity, i_EnergyType, i_Wheels)
+        internal Motorcycle(string io_ModelName,
+            string io_LicenseNumber, List<Wheel> io_Wheels,
+            Engine.eEngineType io_EngineType, float io_EenergyLeft,
+            List<object> io_UniqueParametersList) : base(io_ModelName, io_LicenseNumber, io_Wheels, io_EngineType, io_EenergyLeft, eVehicleType.Car)
         {
-            if (i_MotorVolume < 1)
-            {
-                throw new ValueOutOfRangeException(1, Int32.MaxValue);
-            }
-
             try
             {
-                m_LicenseType = i_LicenseType;
-                m_MotorVolume = i_MotorVolume;
+                m_LicenseType = (eLicenseType)io_UniqueParametersList[0];
+                m_MotorVolume = (int)io_UniqueParametersList[1];
+
+                if (m_MotorVolume < 1)
+                {
+                    throw new ValueOutOfRangeException(1, Int32.MaxValue);
+                }
             }
             catch (FormatException exception)
             {

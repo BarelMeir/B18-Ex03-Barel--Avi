@@ -10,18 +10,9 @@ namespace Ex03.GarageLogic
     {
         public enum eVehicleType
         {
-            ElectricCar,
-            ElectricMotorcycle,
-            FueledCar,
-            FueledMotorcycle,
-            FueledTruck
-        }
-
-        public enum eEnergyType
-        {
-            Octan96,
-            Octan98,
-            Electric
+            Car,
+            Motorcycle,
+            Truck
         }
 
         public enum eRepairStatus
@@ -69,33 +60,26 @@ namespace Ex03.GarageLogic
                     throw new ValueOutOfRangeException(0, m_MaxAirPressure);
                 }
 
-                m_CurrentAirPressure += i_MountToInflate; //TODO make sure this Exception works as expected.
+                m_CurrentAirPressure += i_MountToInflate; 
             }
         }
 
         private string m_ModelName;
         private string m_LicenseNumber;
-/*        private float m_EnergyLeftPrecentage;
-        private float m_CurrentEnergy;
-        private float m_MaxEnergyCapacity;*/
-        private LinkedList<Wheel> m_Wheels;
+        private List<Wheel> m_Wheels;
         private eRepairStatus m_RepairStatus;
-        private eEnergyType m_EnergyType;
-        private eVehicleType m_VehicleType;
+        private Engine m_Engine;
 
-        internal Vehicle(string i_ModelName, string i_LicenseNumber, float i_CurrentEnergy, eEnergyType i_EnergyType, LinkedList<Wheel> i_Wheels, eVehicleType i_VehicleType)
-        {
+        internal Vehicle(string i_ModelName, string i_LicenseNumber, List<Wheel> i_Wheels, Engine.eEngineType io_EngineType,
+            float io_EnergyLeft, eVehicleType io_VehicleType)
+        { 
             try
             {
                 m_ModelName = i_ModelName;
                 m_LicenseNumber = i_LicenseNumber;
-           /*     m_CurrentEnergy = i_CurrentEnergy;
-                m_MaxEnergyCapacity = i_MaxEnergyCapacity;*/
                 m_Wheels = i_Wheels;
-                m_EnergyType = i_EnergyType;
                 m_RepairStatus = eRepairStatus.InProgress;
-              //  m_EnergyLeftPrecentage = m_CurrentEnergy / m_MaxEnergyCapacity;
-                m_VehicleType = i_VehicleType;
+                m_Engine = new Engine(io_EngineType, io_EnergyLeft, io_VehicleType);
             }
             catch (FormatException exception)
             {
@@ -117,20 +101,18 @@ namespace Ex03.GarageLogic
 
         public float EnergyLeftPrecentage
         {
-            get { return m_EnergyLeftPrecentage; }
-            set { m_EnergyLeftPrecentage = value; }
+            get { return m_Engine.EnergyPercentgeLeft; }
         }
 
         public float CurrentEnergy
         {
-            get { return m_CurrentEnergy; }
-            set { m_CurrentEnergy = value; }
+            get { return m_Engine.CurrentLeftEnergy; }
+            set { m_Engine.CurrentLeftEnergy = value; }
         }
 
         public float MaxEnergyCapacity
         {
-            get { return m_MaxEnergyCapacity; }
-            set { m_MaxEnergyCapacity = value; }
+            get { return m_Engine.MaxEnergyCapacity; }
         }
 
         public eRepairStatus RepairStatus
@@ -147,21 +129,11 @@ namespace Ex03.GarageLogic
             }
         }
 
-        public void AddEnergy(eEnergyType i_EnergyType, float i_AmountToAdd)
+        public void AddEnergy(Engine.eEnergyType i_EnergyType, float i_AmountToAdd)
         {
-            if (m_EnergyType != i_EnergyType)
-            {
-                throw new ArgumentException();
-            }
-
-            if (m_CurrentEnergy + i_AmountToAdd > m_MaxEnergyCapacity)
-            {
-                throw new ValueOutOfRangeException(0, m_MaxEnergyCapacity);
-            }
-
             try
             {
-                m_CurrentEnergy += i_AmountToAdd;
+                m_Engine.AddEnergy(i_EnergyType, i_AmountToAdd);
             }
             catch (FormatException exception)
             {
