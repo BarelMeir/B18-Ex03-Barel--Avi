@@ -26,7 +26,7 @@ namespace Ex03.GarageLogic
             try
             {
                 m_LicenseType = (eLicenseType)io_UniqueParametersList[0];
-                m_MotorVolume = (int)io_UniqueParametersList[1];
+                m_MotorVolume = int.Parse((string)io_UniqueParametersList[1]);
 
                 if (m_MotorVolume < 1)
                 {

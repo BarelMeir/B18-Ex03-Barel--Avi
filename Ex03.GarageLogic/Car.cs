@@ -25,7 +25,7 @@ namespace Ex03.GarageLogic
             try
             {
                 m_CarColor = (eCarColor)io_UniqueParametersList[0];
-                m_DoorsAmount = (int)io_UniqueParametersList[1]; ;
+                m_DoorsAmount = int.Parse((string)io_UniqueParametersList[1]); 
 
                 if (m_DoorsAmount < 2 || m_DoorsAmount > 5)
                 {

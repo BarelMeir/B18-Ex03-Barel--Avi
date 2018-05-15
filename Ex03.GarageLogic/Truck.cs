@@ -16,8 +16,8 @@ namespace Ex03.GarageLogic
         {
             try
             {
-                m_IsToxic = (bool)io_UniqueParametersList[0];
-                m_MaxWeight = (float)io_UniqueParametersList[1];
+                m_IsToxic = bool.Parse((string)io_UniqueParametersList[0]);
+                m_MaxWeight = float.Parse((string)io_UniqueParametersList[1]);
 
                 if (m_MaxWeight <=0 )
                 {
