@@ -48,5 +48,16 @@ namespace Ex03.GarageLogic
         {
             get { return m_MotorVolume; }
         }
+
+        public override string ToString()
+        {
+            Console.WriteLine(base.ToString());
+
+            return string.Format(
+                @"License Type: {0}
+Motor Volume: {1}",
+                m_LicenseType,
+                m_MotorVolume);
+        }
     }
 }

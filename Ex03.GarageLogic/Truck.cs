@@ -14,6 +14,11 @@ namespace Ex03.GarageLogic
             Engine.eEngineType io_EngineType, float io_EenergyLeft,
             List<object> io_UniqueParametersList) : base(io_ModelName, io_LicenseNumber, io_Wheels, io_EngineType, io_EenergyLeft, eVehicleType.Car)
         {
+            if (io_EngineType == Engine.eEngineType.Electric)
+            {
+                throw new ArgumentException();
+            }
+
             try
             {
                 m_IsToxic = bool.Parse((string)io_UniqueParametersList[0]);
@@ -52,6 +57,17 @@ namespace Ex03.GarageLogic
             {
                 throw exception;
             }
+        }
+
+        public override string ToString()
+        {
+            Console.WriteLine(base.ToString());
+
+            return string.Format(
+                @"Contains Toxics: {0}
+Max Weight: {1}",
+                m_IsToxic ? "yes" : "no",
+                m_MaxWeight);
         }
     }
 }

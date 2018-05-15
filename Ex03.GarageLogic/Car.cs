@@ -47,6 +47,17 @@ namespace Ex03.GarageLogic
         {
             get { return m_DoorsAmount; }
         }
+
+        public override string ToString()
+        {
+            Console.WriteLine(base.ToString());
+
+            return string.Format(
+                @"Car Color: {0}
+Doors Amount: {1}",
+                m_CarColor,
+                m_DoorsAmount);
+        }
     }
 }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Security.Policy;
 using System.Text;
+using System.Threading;
 using Ex03.GarageLogic;
 
 namespace Ex03.ConsoleUI
@@ -17,78 +18,58 @@ namespace Ex03.ConsoleUI
             string mainMenuUserInputStr;
             int maimMenuUserInput;
             string message = string.Format(
-                @"Hello, what would you like to do?
+                @"
+Hello, what would you like to do? (Enter the line number)
 1. Insert a new vehicle to the garage
-2. Show a list of all license numbers in the garage
+2. Show a list of license numbers in the garage
 3. Change a vehicle status
 4. Inflate a vehicle weels (to max)
 5. Fuel a Fueled vehicle.
 6. Charge an electrical vehicle.
 7. Display a specific vehicle details.
-0. Exit the system." + Environment.NewLine);
+0. Exit the system.
+");
 
             while (stayInSystem)
             {
                 Console.WriteLine(message);
                 mainMenuUserInputStr = Console.ReadLine();
-                maimMenuUserInput = validationUserSelection(mainMenuUserInputStr);
+                maimMenuUserInput = validateMainMenuSelection(mainMenuUserInputStr);
                 switch (maimMenuUserInput)
                 {
                     case 1:
-                        checkIfExistLisenceNumber();
+                        addOrUpdateVehicle();
                         break;
-      /*              case 2:
-                        showListOfLicenseNumbers(newGarage);
+                    case 2:
+                        showListOfLicenseNumbers();
                         break;
                     case 3:
-                        changeVehicleStatus(newGarage);
+                        updapeVehicleStatus();
                         break;
                     case 4:
-                        inflateVehicleWheelsToMax(newGarage);
+                        inflateWheelsToMax();
                         break;
                     case 5:
-                        refuelVehicle(newGarage);
+                        fuelVehicle();
                         break;
                     case 6:
-                        chargeBatteryOfVehicle(newGarage);
+                        chargeVehicle();
                         break;
-                    case 7:
-                        displayDataOfSpecificVehicle(newGarage);
-                        break;*/
-                    case 0:
-                        stayInSystem = false;
-                        exitMode();
-                        break;
+                   case 7:
+                        displayDataOfSpecificVehicle();
+                        break; 
+                   case 0:
+                       stayInSystem = false;
+                       break;
                 }
             }
+
+            Console.WriteLine("Bye Bye");
         }
 
+        // ----------------------------------------------- main menu methods -------------------------
 
-
-        private static int readStatusToShow()
-        {
-            string statusStr;
-            int chosenStatus;
-            string message = string.Format(
-                    @"Please insert the correct number of the required repair status:
-1. In Progress
-2. Complited
-3. Paid");
-
-            Console.WriteLine(message);
-            statusStr = Console.ReadLine();
-            while (statusStr != "1" && statusStr != "2" && statusStr != "3")
-            {
-                Console.WriteLine("Invalid status. please choose a number between 1-3");
-                statusStr = Console.ReadLine();
-            }
-
-            chosenStatus = int.Parse(statusStr);
-
-            return chosenStatus;
-        }
-        
-        private void gernericInsert(string io_LicenseNumber)
+        private void insertNewVehicle(string io_LicenseNumber)
         {
 
             /*  get a vehicle type
@@ -110,7 +91,7 @@ namespace Ex03.ConsoleUI
             clientName = readOwnerName();
             clientPhoneNumber = readOwnerPhoneNumber();
             //vehicleType = readVehicleType();
-            vehicleType = (Vehicle.eVehicleType) readEnumType(typeof(Vehicle.eVehicleType));
+            vehicleType = (Vehicle.eVehicleType)readEnumType(typeof(Vehicle.eVehicleType));
             modelName = readModelName();
             //engineType = readEngineType();
             engineType = (Engine.eEngineType)readEnumType(typeof(Engine.eEngineType));
@@ -119,9 +100,178 @@ namespace Ex03.ConsoleUI
             wheelsAirPressure = readWheelsCurrentAirPressure();
             uniqueParametersList = readUniqueParametersList(vehicleType);
 
-            m_Garage.AddClient(clientName, clientPhoneNumber, modelName, io_LicenseNumber, vehicleType, wheelsManufacture,
-                wheelsAirPressure, engineType, energyLeft, uniqueParametersList);
+            try
+            {
+                m_Garage.AddClient(clientName, clientPhoneNumber, modelName, io_LicenseNumber, vehicleType,
+                    wheelsManufacture,
+                    wheelsAirPressure, engineType, energyLeft, uniqueParametersList);
+                Console.WriteLine(Environment.NewLine + "Vehicle added successfully.");
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Oops! Something went wrong. Exit back to Main Menu.");
+                MainMenue();
+            }
         }
+
+        private void showListOfLicenseNumbers()
+        {
+            bool showAllLicenseNumbers;
+            Vehicle.eRepairStatus chosenStatus;
+
+            Console.WriteLine("Display all the license numbers in the system? y / n");
+            showAllLicenseNumbers = validateBooleanPresentor(Console.ReadLine());
+
+            // Show all license numbers that are in the system
+            if (showAllLicenseNumbers)
+            {
+                printLicenseNumbersFromList(m_Garage.GetAllLicenseNumbers());
+            }
+            else
+            {
+                chosenStatus = (Vehicle.eRepairStatus) readEnumType(typeof(Vehicle.eRepairStatus));
+                printLicenseNumbersFromList(m_Garage.GetLicenseNumbersInStatus(chosenStatus));
+            }
+        }
+
+        private void updapeVehicleStatus()
+        {
+            string licenseNumber; 
+            Vehicle.eRepairStatus newStatus; 
+
+            licenseNumber = readLisenceNumber();
+            if (!m_Garage.ContainsLicenseNumber(licenseNumber))
+            {
+                Console.WriteLine("The lisence number is not in the system.");
+                MainMenue();
+            }
+
+            newStatus = (Vehicle.eRepairStatus)readEnumType(typeof(Vehicle.eRepairStatus));
+            m_Garage.updateExistingClient(licenseNumber, newStatus);
+        }
+
+        private void inflateWheelsToMax()
+        {
+            string licenseNumber = readLisenceNumber();
+
+            if (!m_Garage.ContainsLicenseNumber(licenseNumber))
+            {
+                Console.WriteLine("The lisence number is not in the system.");
+                MainMenue();
+            }
+
+            m_Garage.InflateWheelsToMax(licenseNumber);
+        }
+
+        private void fuelVehicle()
+        {
+            string licenseNumber;
+            float addAmount;
+            Engine.eEnergyType fuelType;
+
+            licenseNumber = readLisenceNumber();
+            if (!m_Garage.ContainsLicenseNumber(licenseNumber))
+            {
+                Console.WriteLine("The lisence number is not in the system.");
+                MainMenue();
+            }
+
+            addAmount = readEnergyAddAmount();
+            fuelType = (Engine.eEnergyType)readEnumType(typeof(Engine.eEnergyType));
+            while (fuelType == Engine.eEnergyType.Electricity)
+            {
+                Console.WriteLine("Please select a FEUL type (not Electricity)");
+                fuelType = (Engine.eEnergyType)readEnumType(typeof(Engine.eEnergyType));
+            }
+
+            try
+            {
+                m_Garage.FuelVehicle(licenseNumber, fuelType, addAmount);
+            }
+            catch (Ex03.GarageLogic.ValueOutOfRangeException exception)
+            {
+                Console.WriteLine("You overpass the max limit of yor gas tank. Please try again");
+                fuelVehicle();
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine("Oops! Something went wrong. Exit back to Main Menu.");
+                MainMenue();
+            }
+        }
+
+        private void chargeVehicle()
+        {
+            string licenseNumber;
+            float addAmount;
+
+            licenseNumber = readLisenceNumber();
+            if (!m_Garage.ContainsLicenseNumber(licenseNumber))
+            {
+                Console.WriteLine("The lisence number is not in the system.");
+                MainMenue();
+            }
+
+            addAmount = readEnergyAddAmount();
+            try
+            {
+                m_Garage.ChargeVehicle(licenseNumber, addAmount);
+            }
+            catch (Ex03.GarageLogic.ValueOutOfRangeException exception)
+            {
+                Console.WriteLine("You overpass the max limit of yor gas tank. Please try again");
+                chargeVehicle();
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine("Oops! Something went wrong. Exit back to Main Menu.");
+                MainMenue();
+            }
+        }
+
+        private void displayDataOfSpecificVehicle()
+        {
+            string licenseNumber = readLisenceNumber();
+
+            if (!m_Garage.ContainsLicenseNumber(licenseNumber))
+            {
+                Console.WriteLine("The lisence number is not in the system.");
+                MainMenue();
+            }
+
+            m_Garage.PrintVehicle(licenseNumber);
+        }
+
+        // ----------------------------------------------- main menu helper methods -------------------------
+
+        private void addOrUpdateVehicle()
+        {
+            string ownerLisenceNumber = readLisenceNumber();
+
+            if (m_Garage.ContainsLicenseNumber(ownerLisenceNumber))
+            {
+                m_Garage.updateExistingClient(ownerLisenceNumber, Vehicle.eRepairStatus.InProgress);
+                Console.WriteLine("Car is already exist in the system. Status was updated to be In Progress.");
+            }
+            else
+            {
+                insertNewVehicle(ownerLisenceNumber);
+            }
+        }
+
+        private static void printLicenseNumbersFromList(List<string> listOfLicenseNumbers)
+        {
+            StringBuilder licenseNumbersStr = new StringBuilder();
+
+            for (int i = 0; i < listOfLicenseNumbers.Count; i++)
+            {
+                licenseNumbersStr.Append(listOfLicenseNumbers[i].ToString() + ", ");
+            }
+
+            Console.WriteLine(licenseNumbersStr);
+        }
+
+        // ----------------------------------------------- read input from user methods -------------------------
 
         private static Enum readEnumType(Type i_Enum)
         {
@@ -148,7 +298,7 @@ namespace Ex03.ConsoleUI
             isValidSelection = int.TryParse(Console.ReadLine(), out userSelection);
             while (!isValidSelection || userSelection < 1 || userSelection > enumTypeValues.Count)
             {
-                Console.WriteLine("Invalid type, please try again:");
+                Console.WriteLine("Invalid line number, please try again:");
                 isValidSelection = int.TryParse(Console.ReadLine(), out userSelection);
             }
 
@@ -171,6 +321,12 @@ namespace Ex03.ConsoleUI
                 if (fields[i].FieldType.IsEnum)
                 {
                     uniqueParametersList.Add(readEnumType(fields[i].FieldType));
+                }
+                else if (fields[i].FieldType == typeof(bool))
+                {
+                    message = string.Format("Enter {0} , Please answer by: y / n", fields[i].Name.Substring(2));
+                    Console.WriteLine(message);
+                    uniqueParametersList.Add(validateBooleanPresentor(Console.ReadLine()));
                 }
                 else
                 {
@@ -201,61 +357,14 @@ namespace Ex03.ConsoleUI
         private static float readWheelsCurrentAirPressure()
         {
             float currentAirPressure;
-            bool isValidairPressure;
-
+            
             Console.WriteLine("Please enter wheels current air pressure: ");
-            isValidairPressure = float.TryParse(Console.ReadLine(), out currentAirPressure);
-            while (!isValidairPressure)
-            {
-                Console.WriteLine("Invalid wheels current air pressure, please try again:");
-                isValidairPressure = float.TryParse(Console.ReadLine(), out currentAirPressure);
-            }
+            currentAirPressure = float.Parse(validateNumber(Console.ReadLine()));
 
             return currentAirPressure;
         }
 
-        private static void exitMode()
-        {
-            Console.WriteLine("Bye Bye");
-        }
-
-        private static int validationUserSelection(string io_MainMenuUserInputStr)
-        {
-            int mainMenuUserSelection = 0;
-            bool validNumber = int.TryParse(io_MainMenuUserInputStr, out mainMenuUserSelection);
-            while (!validNumber || mainMenuUserSelection > 7 || mainMenuUserSelection < 0)
-            {
-                if (!validNumber)
-                {
-                    Console.WriteLine("Your choice must contain only digits between 0-7. Please try again:");
-                }
-                else
-                {
-                    Console.WriteLine("This option doesn't exist. Please choose an option between 0-7:");
-                }
-                io_MainMenuUserInputStr = Console.ReadLine();
-                mainMenuUserSelection = 0;
-                validNumber = int.TryParse(io_MainMenuUserInputStr, out mainMenuUserSelection);
-            }
-            return mainMenuUserSelection;
-        }
-
-        private void checkIfExistLisenceNumber()
-        {
-            string ownerLisenceNumber = getLisenceNumber();
-
-            if (m_Garage.ContainsLicenseNumber(ownerLisenceNumber))
-            {
-               // m_Garage.updateExistingClient(ownerLisenceNumber);
-                Console.WriteLine("Car already exist in system. Status was updated.");
-            }
-            else
-            {
-                gernericInsert(ownerLisenceNumber);
-            }
-        }
-
-        private static string getLisenceNumber()
+        private static string readLisenceNumber()
         {
             string lisenceNumber;
 
@@ -282,18 +391,10 @@ namespace Ex03.ConsoleUI
 
         private static float readCurrentEnergy()
         {
-            string currentEnergyStr;
             float currentEnergy;
-            bool isValidEnergy;
-
+            
             Console.WriteLine("Please enter vehicle's current energy left:");
-            currentEnergyStr = Console.ReadLine();
-            isValidEnergy = float.TryParse(currentEnergyStr,out currentEnergy);
-            while (!isValidEnergy)
-            {
-                Console.WriteLine("Invalid energy left. please insert a number");
-                isValidEnergy = float.TryParse(currentEnergyStr, out currentEnergy);
-            }
+            currentEnergy = float.Parse(validateNumber(Console.ReadLine()));
 
             return currentEnergy;
         }
@@ -319,96 +420,74 @@ namespace Ex03.ConsoleUI
             string phoneNumer;
 
             Console.WriteLine("Please enter owner's phone number:");
-            phoneNumer = validationOfOwnersPhoneNumber(Console.ReadLine());
+            phoneNumer = validateNumber(Console.ReadLine());
 
             return phoneNumer;
         }
 
-        private static string validationOfOwnersPhoneNumber(string io_OwnersPhoneNumber)
+        private static float readEnergyAddAmount()
         {
-            int ownersPhoneNumber = 0;
-            bool validNumber = int.TryParse(io_OwnersPhoneNumber, out ownersPhoneNumber);
+            float addAmount;
+
+            Console.WriteLine("Please enter the amount to add:");
+            addAmount = float.Parse(validateNumber(Console.ReadLine()));
+
+            return addAmount;
+        }
+
+        // ----------------------------------------------- input validation methods -------------------------
+
+        private static int validateMainMenuSelection(string io_MainMenuUserInputStr)
+        {
+            int mainMenuUserSelection = 0;
+            bool validNumber = int.TryParse(io_MainMenuUserInputStr, out mainMenuUserSelection);
+            while (!validNumber || mainMenuUserSelection > 7 || mainMenuUserSelection < 0)
+            {
+                if (!validNumber)
+                {
+                    Console.WriteLine("Your choice must contain only digits between 0-7. Please try again:");
+                }
+                else
+                {
+                    Console.WriteLine("This option doesn't exist. Please choose an option between 0-7:");
+                }
+                io_MainMenuUserInputStr = Console.ReadLine();
+                mainMenuUserSelection = 0;
+                validNumber = int.TryParse(io_MainMenuUserInputStr, out mainMenuUserSelection);
+            }
+            return mainMenuUserSelection;
+        }
+
+        private static string validateNumber(string i_Input)
+        {
+            float number = 0;
+            bool validNumber = float.TryParse(i_Input, out number);
+
             while (!validNumber)
             {
-                Console.WriteLine("Phone number must contain only digits. Please try again");
-                io_OwnersPhoneNumber = Console.ReadLine();
-                ownersPhoneNumber = 0;
-                validNumber = int.TryParse(io_OwnersPhoneNumber, out ownersPhoneNumber);
+                Console.WriteLine("This must contain only digits. Please try again");
+                i_Input = Console.ReadLine();
+                number = 0;
+                validNumber = float.TryParse(i_Input, out number);
             }
 
-            return ownersPhoneNumber.ToString();
+            return number.ToString();
         }
 
-
-
-
-        public static Vehicle.eVehicleType readVehicleType()
+        private static bool validateBooleanPresentor(string i_Input)
         {
-            int userSelection;
-            bool isValidSelection;
-            Vehicle.eVehicleType selectedType;
-            StringBuilder message = new StringBuilder();
-            List<Vehicle.eVehicleType> vehiclesTypes = new List<Vehicle.eVehicleType>();
+            bool returnValue;
 
-            //add all the vehicles types to the list
-            foreach (Vehicle.eVehicleType typeValue in Enum.GetValues(typeof(Vehicle.eVehicleType)))
+            while (i_Input != "y" && i_Input != "n")
             {
-                vehiclesTypes.Add(typeValue);
+                Console.WriteLine("Invalid input, please choose y or n:");
+                i_Input = Console.ReadLine();
             }
 
-            // build the message
-            for (int i = 0; i < vehiclesTypes.Count; i++)
-            {
-                message.Append((i + 1) + ". " + vehiclesTypes[i].ToString() + Environment.NewLine);
-            }
+            returnValue = i_Input == "y";
 
-            Console.WriteLine("Please select one of the following type number:");
-            Console.WriteLine(message);
-            isValidSelection = int.TryParse(Console.ReadLine(), out userSelection);
-            while (!isValidSelection || userSelection < 1 || userSelection > vehiclesTypes.Count)
-            {
-                Console.WriteLine("Invalid type, please select a single number from the list:");
-                isValidSelection = int.TryParse(Console.ReadLine(), out userSelection);
-            }
-
-            selectedType = vehiclesTypes[userSelection - 1];
-
-            return selectedType;
+            return returnValue;
         }
-
-        private static Engine.eEngineType readEngineType()
-        {
-            int userSelection;
-            bool isValidSelection;
-            Engine.eEngineType selectedType;
-            StringBuilder message = new StringBuilder();
-            List<Engine.eEngineType> engineTypes = new List<Engine.eEngineType>();
-
-            //add all the engine types to the list
-            foreach (Engine.eEngineType typeValue in Enum.GetValues(typeof(Engine.eEngineType)))
-            {
-                engineTypes.Add(typeValue);
-            }
-
-            // build the message
-            for (int i = 0; i < engineTypes.Count; i++)
-            {
-                message.Append((i + 1) + ". " + engineTypes[i].ToString() + Environment.NewLine);
-            }
-
-            Console.WriteLine("Please select one of the following type number:");
-            Console.WriteLine(message);
-            isValidSelection = int.TryParse(Console.ReadLine(), out userSelection);
-            while (!isValidSelection || userSelection < 1 || userSelection > engineTypes.Count)
-            {
-                Console.WriteLine("Invalid type, please try again:");
-                isValidSelection = int.TryParse(Console.ReadLine(), out userSelection);
-            }
-
-            selectedType = engineTypes[userSelection - 1];
-
-            return selectedType;
-        }
-        
+       
     }
 }

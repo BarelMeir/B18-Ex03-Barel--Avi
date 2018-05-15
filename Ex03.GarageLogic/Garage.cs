@@ -6,9 +6,9 @@ namespace Ex03.GarageLogic
 {
     public class Garage
     {
-        Dictionary<String, Ex03.GarageLogic.Client> m_Clients = new Dictionary<string, Client>();
+        Dictionary<String, Client> m_Clients = new Dictionary<string, Client>();
 
-        public Dictionary<String, Ex03.GarageLogic.Client> Clients
+        public Dictionary<String, Client> Clients
         {
             get { return m_Clients; }
         }
@@ -66,6 +66,83 @@ namespace Ex03.GarageLogic
             }
 
             return wheels;
+        }
+        
+        public void updateExistingClient(string i_LisenceNumber, Vehicle.eRepairStatus io_NewRepairStatus)
+        {
+            Client client = m_Clients[i_LisenceNumber];
+
+            client.Vehicle.RepairStatus = io_NewRepairStatus;
+        }
+
+        public List<string> GetAllLicenseNumbers()
+        {
+            List<string> allLicenseNumbers = new List<string>();
+
+            foreach (string licenseNumber in m_Clients.Keys)
+            {
+                allLicenseNumbers.Add(licenseNumber);
+            }
+
+            return allLicenseNumbers;
+        }
+
+        public List<string> GetLicenseNumbersInStatus(Vehicle.eRepairStatus i_RepairStatus)
+        {
+            List<string> licenseNumbersInRequiredStatus = new List<string>();
+
+            foreach (KeyValuePair<string, Client> kvp in m_Clients)
+            {
+                if (kvp.Value.Vehicle.RepairStatus == i_RepairStatus)
+                {
+                    licenseNumbersInRequiredStatus.Add(kvp.Key);
+                }
+            }
+
+            return licenseNumbersInRequiredStatus;
+
+        }
+
+        public void InflateWheelsToMax(string i_LicenseNumber)
+        {
+            try
+            {
+                m_Clients[i_LicenseNumber].Vehicle.InflateAllWheelsToMax();
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+        }
+
+        public void FuelVehicle(string i_LicenseNumber, Engine.eEnergyType io_FuelType, float io_AddAmount)
+        {
+            try
+            {
+                m_Clients[i_LicenseNumber].Vehicle.AddEnergy(io_FuelType, io_AddAmount);
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+        }
+
+        public void ChargeVehicle(string i_LicenseNumber, float io_AddAmount)
+        {
+            try
+            {
+                m_Clients[i_LicenseNumber].Vehicle.AddEnergy(Engine.eEnergyType.Electricity, io_AddAmount);
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+        }
+
+        public void PrintVehicle(string i_LicenseNumber)
+        {
+            Console.WriteLine(m_Clients[i_LicenseNumber]);
+            Console.WriteLine(m_Clients[i_LicenseNumber].Vehicle);
         }
     }
 }

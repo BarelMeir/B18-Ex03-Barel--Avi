@@ -62,6 +62,12 @@ namespace Ex03.GarageLogic
 
                 m_CurrentAirPressure += i_MountToInflate; 
             }
+
+            public override string ToString()
+            {
+                return string.Format("Manufactor Name: {0}, Current Air Pressure: {1}", m_ManufactorName,
+                    m_CurrentAirPressure);
+            }
         }
 
         private string m_ModelName;
@@ -129,6 +135,11 @@ namespace Ex03.GarageLogic
             }
         }
 
+        public void InflateAllWheelsToMax()
+        {
+            InflateAllWheels(m_Wheels[0].MaxAirPressure);
+        }
+
         public void AddEnergy(Engine.eEnergyType i_EnergyType, float i_AmountToAdd)
         {
             try
@@ -141,6 +152,51 @@ namespace Ex03.GarageLogic
             }
             
         }
+
+        public Engine Engine
+        {
+            get { return m_Engine; }
+        }
+
+        public override string ToString()
+        {
+            string vehicleData;
+            string wheelString;
+            StringBuilder wheelsDetails = new StringBuilder();
+            int i = 1;
+
+            foreach (Wheel wheel in m_Wheels)
+            {
+                if (i == m_Wheels.Count)
+                {
+                    wheelString = string.Format("\t{0}. {1}", i, wheel);
+
+                }
+                else
+                {
+                    wheelString = string.Format("\t{0}. {1}{2}", i, wheel, Environment.NewLine);
+                }
+
+                wheelsDetails.Append(wheelString);
+                i++;
+            }
+
+            vehicleData = string.Format(
+                    @"License Number: {0}
+Model Name: {1}
+Repair Status: {2}
+Wheels: 
+{3}
+{4}",
+                m_LicenseNumber,
+                m_ModelName,
+                m_RepairStatus.ToString(),
+                wheelsDetails,
+                m_Engine);
+
+            return vehicleData;
+        }
+
 
     }
 }

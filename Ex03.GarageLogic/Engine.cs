@@ -74,6 +74,8 @@ namespace Ex03.GarageLogic
             {
                 throw new ArgumentException();
             }
+
+            updateEnergyPercentge();
         }
 
         public float MaxEnergyCapacity
@@ -102,6 +104,11 @@ namespace Ex03.GarageLogic
             get { return m_EnergyType; }
         }
 
+        private void updateEnergyPercentge()
+        {
+            m_EnergyPercentgeLeft = (m_CurrentLeftEnergy * 100) / m_MaxEnergyCapacity;
+        }
+
         internal void AddEnergy(eEnergyType i_EngineType, float i_AmountToAdd)
         {
             if (m_EnergyType != i_EngineType)
@@ -117,13 +124,19 @@ namespace Ex03.GarageLogic
             try
             {
                 m_CurrentLeftEnergy += i_AmountToAdd;
-                m_EnergyPercentgeLeft = (m_CurrentLeftEnergy * 100) / m_MaxEnergyCapacity;
+                updateEnergyPercentge();
             }
             catch (FormatException exception)
             {
                 throw exception;
             }
 
+        }
+
+        public override string ToString()
+        {
+            return string.Format("Energy Precentage Left: {0}% , Energy Type: {1}", EnergyPercentgeLeft,
+                m_EnergyType.ToString());
         }
     }
 }
