@@ -25,7 +25,7 @@ namespace Ex03.GarageLogic
         {
             try
             {
-                List<Vehicle.Wheel> wheels = setAllWheels(io_WheelsManufacture, io_WheelsAirPressure, io_VehicleType);
+                List<Wheel> wheels = setAllWheels(io_WheelsManufacture, io_WheelsAirPressure, io_VehicleType);
                 Client newClient = new Client(io_ClientName, io_lientPhoneNumber, io_ModelName, io_LicenseNumber,
                     io_VehicleType, wheels, io_EngineType, io_EenergyLeft, io_UniqueParametersList);
 
@@ -37,28 +37,28 @@ namespace Ex03.GarageLogic
             }
         }
 
-        private static List<Vehicle.Wheel> setAllWheels(string i_WheelsManufacture, float i_WheelsAirPressure, Vehicle.eVehicleType i_VehicleType)
+        private static List<Wheel> setAllWheels(string i_WheelsManufacture, float i_WheelsAirPressure, Vehicle.eVehicleType i_VehicleType)
         {
-            List<Vehicle.Wheel> wheels = new List<Vehicle.Wheel>();
+            List<Wheel> wheels = new List<Wheel>();
 
             switch (i_VehicleType)
             {
                 case Vehicle.eVehicleType.Car:
                     for (int i = 0; i < 4; i++)
                     {
-                        wheels.Add(new Vehicle.Wheel(i_WheelsManufacture, i_WheelsAirPressure, 32));
+                        wheels.Add(new Wheel(i_WheelsManufacture, i_WheelsAirPressure, 32));
                     }
                     break;
                 case Vehicle.eVehicleType.Motorcycle:
                     for (int i = 0; i < 2; i++)
                     {
-                        wheels.Add(new Vehicle.Wheel(i_WheelsManufacture, i_WheelsAirPressure, 30));
+                        wheels.Add(new Wheel(i_WheelsManufacture, i_WheelsAirPressure, 30));
                     }
                     break;
                 case Vehicle.eVehicleType.Truck:
                     for (int i = 0; i < 12; i++)
                     {
-                        wheels.Add(new Vehicle.Wheel(i_WheelsManufacture, i_WheelsAirPressure, 28));
+                        wheels.Add(new Wheel(i_WheelsManufacture, i_WheelsAirPressure, 28));
                     }
                     break;
                 default:
@@ -91,16 +91,15 @@ namespace Ex03.GarageLogic
         {
             List<string> licenseNumbersInRequiredStatus = new List<string>();
 
-            foreach (KeyValuePair<string, Client> kvp in m_Clients)
+            foreach (KeyValuePair<string, Client> licenseClientPair in m_Clients)
             {
-                if (kvp.Value.Vehicle.RepairStatus == i_RepairStatus)
+                if (licenseClientPair.Value.Vehicle.RepairStatus == i_RepairStatus)
                 {
-                    licenseNumbersInRequiredStatus.Add(kvp.Key);
+                    licenseNumbersInRequiredStatus.Add(licenseClientPair.Key);
                 }
             }
 
             return licenseNumbersInRequiredStatus;
-
         }
 
         public void InflateWheelsToMax(string i_LicenseNumber)
@@ -139,10 +138,12 @@ namespace Ex03.GarageLogic
             }
         }
 
-        public void PrintVehicle(string i_LicenseNumber)
+        public string PrintVehicle(string i_LicenseNumber)
         {
-            Console.WriteLine(m_Clients[i_LicenseNumber]);
-            Console.WriteLine(m_Clients[i_LicenseNumber].Vehicle);
+            return string.Format(@"{0}
+{1}",
+                m_Clients[i_LicenseNumber],
+                    m_Clients[i_LicenseNumber].Vehicle);
         }
     }
 }

@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Security.Policy;
 using System.Text;
-using System.Threading;
 using Ex03.GarageLogic;
 
 namespace Ex03.ConsoleUI
@@ -18,8 +16,7 @@ namespace Ex03.ConsoleUI
             string mainMenuUserInputStr;
             int maimMenuUserInput;
             string message = string.Format(
-                @"
-Hello, what would you like to do? (Enter the line number)
+                @"Hello, what would you like to do? (Enter the line number)
 1. Insert a new vehicle to the garage
 2. Show a list of license numbers in the garage
 3. Change a vehicle status
@@ -27,11 +24,10 @@ Hello, what would you like to do? (Enter the line number)
 5. Fuel a Fueled vehicle.
 6. Charge an electrical vehicle.
 7. Display a specific vehicle details.
-0. Exit the system.
-");
-
+0. Exit the system.");
             while (stayInSystem)
             {
+                Ex02.ConsoleUtils.Screen.Clear();
                 Console.WriteLine(message);
                 mainMenuUserInputStr = Console.ReadLine();
                 maimMenuUserInput = validateMainMenuSelection(mainMenuUserInputStr);
@@ -71,13 +67,6 @@ Hello, what would you like to do? (Enter the line number)
 
         private void insertNewVehicle(string io_LicenseNumber)
         {
-
-            /*  get a vehicle type
-                define fields[] of the type
-                build messeges as string to output for user
-                get from user the relevant fields todo how to determine if relevant?
-                parse to the type*/
-
             string clientName;
             string clientPhoneNumber;
             Vehicle.eVehicleType vehicleType;
@@ -99,17 +88,18 @@ Hello, what would you like to do? (Enter the line number)
             wheelsManufacture = readWheelsManufacture();
             wheelsAirPressure = readWheelsCurrentAirPressure();
             uniqueParametersList = readUniqueParametersList(vehicleType);
-
             try
             {
                 m_Garage.AddClient(clientName, clientPhoneNumber, modelName, io_LicenseNumber, vehicleType,
                     wheelsManufacture,
                     wheelsAirPressure, engineType, energyLeft, uniqueParametersList);
-                Console.WriteLine(Environment.NewLine + "Vehicle added successfully.");
+                Console.WriteLine(Environment.NewLine + "Vehicle added successfully. Press Enter to exit back to Main Menu.");
+                Console.ReadLine();
             }
             catch (Exception)
             {
-                Console.WriteLine("Oops! Something went wrong. Exit back to Main Menu.");
+                Console.WriteLine("Oops! Something went wrong. Press Enter to exit back to Main Menu.");
+                Console.ReadLine();
                 MainMenue();
             }
         }
@@ -142,12 +132,15 @@ Hello, what would you like to do? (Enter the line number)
             licenseNumber = readLisenceNumber();
             if (!m_Garage.ContainsLicenseNumber(licenseNumber))
             {
-                Console.WriteLine("The lisence number is not in the system.");
+                Console.WriteLine("The lisence number is not in the system. Press Enter to exit back to Main Menu");
+                Console.ReadLine();
                 MainMenue();
             }
 
             newStatus = (Vehicle.eRepairStatus)readEnumType(typeof(Vehicle.eRepairStatus));
             m_Garage.updateExistingClient(licenseNumber, newStatus);
+            Console.WriteLine("Status updated successfully. Press Enter to exit back to Main Menu");
+            Console.ReadLine();
         }
 
         private void inflateWheelsToMax()
@@ -156,11 +149,14 @@ Hello, what would you like to do? (Enter the line number)
 
             if (!m_Garage.ContainsLicenseNumber(licenseNumber))
             {
-                Console.WriteLine("The lisence number is not in the system.");
+                Console.WriteLine("The lisence number is not in the system. Press Enter to exit back to Main Menu.");
+                Console.ReadLine();
                 MainMenue();
             }
-
+            
             m_Garage.InflateWheelsToMax(licenseNumber);
+            Console.WriteLine("Air pressure updated successfully. Press Enter to exit back to Main Menu.");
+            Console.ReadLine();
         }
 
         private void fuelVehicle()
@@ -172,7 +168,8 @@ Hello, what would you like to do? (Enter the line number)
             licenseNumber = readLisenceNumber();
             if (!m_Garage.ContainsLicenseNumber(licenseNumber))
             {
-                Console.WriteLine("The lisence number is not in the system.");
+                Console.WriteLine("The lisence number is not in the system. Press Enter to exit back to Main Menu.");
+                Console.ReadLine();
                 MainMenue();
             }
 
@@ -187,15 +184,19 @@ Hello, what would you like to do? (Enter the line number)
             try
             {
                 m_Garage.FuelVehicle(licenseNumber, fuelType, addAmount);
+                Console.WriteLine("Fuel updated successfully. Press Enter to exit back to Main Menu.");
+                Console.ReadLine();
             }
-            catch (Ex03.GarageLogic.ValueOutOfRangeException exception)
+            catch (ValueOutOfRangeException exception)
             {
-                Console.WriteLine("You overpass the max limit of yor gas tank. Please try again");
+                Console.WriteLine("You overpass the max limit of yor gas tank. Press Enter to try again");
+                Console.ReadLine();
                 fuelVehicle();
             }
             catch (Exception exception)
             {
-                Console.WriteLine("Oops! Something went wrong. Exit back to Main Menu.");
+                Console.WriteLine("Oops! Something went wrong. Press Enter to exit back to Main Menu.");
+                Console.ReadLine();
                 MainMenue();
             }
         }
@@ -208,7 +209,8 @@ Hello, what would you like to do? (Enter the line number)
             licenseNumber = readLisenceNumber();
             if (!m_Garage.ContainsLicenseNumber(licenseNumber))
             {
-                Console.WriteLine("The lisence number is not in the system.");
+                Console.WriteLine("The lisence number is not in the system. Press Enter to exit back to Main Menu.");
+                Console.ReadLine();
                 MainMenue();
             }
 
@@ -216,15 +218,19 @@ Hello, what would you like to do? (Enter the line number)
             try
             {
                 m_Garage.ChargeVehicle(licenseNumber, addAmount);
+                Console.WriteLine("Battery updated successfully. Press Enter to exit back to Main Menu.");
+                Console.ReadLine();
             }
             catch (Ex03.GarageLogic.ValueOutOfRangeException exception)
             {
-                Console.WriteLine("You overpass the max limit of yor gas tank. Please try again");
+                Console.WriteLine("You overpass the max limit of yor gas tank. Press Enter to try again");
+                Console.ReadLine();
                 chargeVehicle();
             }
             catch (Exception exception)
             {
-                Console.WriteLine("Oops! Something went wrong. Exit back to Main Menu.");
+                Console.WriteLine("Oops! Something went wrong. Press Enter to exit back to Main Menu.");
+                Console.ReadLine();
                 MainMenue();
             }
         }
@@ -235,11 +241,14 @@ Hello, what would you like to do? (Enter the line number)
 
             if (!m_Garage.ContainsLicenseNumber(licenseNumber))
             {
-                Console.WriteLine("The lisence number is not in the system.");
+                Console.WriteLine("The lisence number is not in the system. Press Enter to exit back to Main Menu.");
+                Console.ReadLine();
                 MainMenue();
             }
 
-            m_Garage.PrintVehicle(licenseNumber);
+            Console.WriteLine(m_Garage.PrintVehicle(licenseNumber));
+            Console.WriteLine("Press Enter to exit back to Main Menu.");
+            Console.ReadLine();
         }
 
         // ----------------------------------------------- main menu helper methods -------------------------
@@ -251,7 +260,8 @@ Hello, what would you like to do? (Enter the line number)
             if (m_Garage.ContainsLicenseNumber(ownerLisenceNumber))
             {
                 m_Garage.updateExistingClient(ownerLisenceNumber, Vehicle.eRepairStatus.InProgress);
-                Console.WriteLine("Car is already exist in the system. Status was updated to be In Progress.");
+                Console.WriteLine("Car is already exist in the system. Status was updated to be In Progress. Press Enter to exit back to Main Menu.");
+                Console.ReadLine();
             }
             else
             {
@@ -265,10 +275,20 @@ Hello, what would you like to do? (Enter the line number)
 
             for (int i = 0; i < listOfLicenseNumbers.Count; i++)
             {
-                licenseNumbersStr.Append(listOfLicenseNumbers[i].ToString() + ", ");
+                licenseNumbersStr.Append(listOfLicenseNumbers[i] + ", ");
             }
 
-            Console.WriteLine(licenseNumbersStr);
+            if (listOfLicenseNumbers.Count == 0)
+            {
+                Console.WriteLine("There are no match vehicles to your search.");
+            }
+            else
+            {
+                Console.WriteLine(licenseNumbersStr);
+
+            }
+            Console.WriteLine("Press Enter to exit back to Main Menu");
+            Console.ReadLine();
         }
 
         // ----------------------------------------------- read input from user methods -------------------------

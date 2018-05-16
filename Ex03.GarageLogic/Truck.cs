@@ -21,7 +21,7 @@ namespace Ex03.GarageLogic
 
             try
             {
-                m_IsToxic = bool.Parse((string)io_UniqueParametersList[0]);
+                m_IsToxic = (bool)io_UniqueParametersList[0];
                 m_MaxWeight = float.Parse((string)io_UniqueParametersList[1]);
 
                 if (m_MaxWeight <=0 )
@@ -35,19 +35,19 @@ namespace Ex03.GarageLogic
             }
         }
 
-        public bool IsToxic
+        internal bool IsToxic
         {
             get { return m_IsToxic; }
             set { m_IsToxic = value; }
         }
 
-        public float MaxWeight
+        internal float MaxWeight
         {
             get { return m_MaxWeight; }
             set { m_MaxWeight = value; }
         }
 
-        public void AddFuel(Engine.eEnergyType io_EnergyType, float i_AmountToAdd)
+        internal void AddFuel(Engine.eEnergyType io_EnergyType, float i_AmountToAdd)
         {
             try
             {

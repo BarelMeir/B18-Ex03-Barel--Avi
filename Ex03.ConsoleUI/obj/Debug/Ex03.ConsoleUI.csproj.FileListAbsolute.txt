@@ -5,3 +5,4 @@ C:\Users\Barel\Documents\Visual Studio 2015\Projects\B18 Ex03 Barel 308275445 Av
 C:\Users\Barel\Documents\Visual Studio 2015\Projects\B18 Ex03 Barel 308275445 Avia 203339551\Ex03.ConsoleUI\obj\Debug\Ex03.ConsoleUI.csprojResolveAssemblyReference.cache
 C:\Users\Barel\Documents\Visual Studio 2015\Projects\B18 Ex03 Barel 308275445 Avia 203339551\Ex03.ConsoleUI\obj\Debug\Ex03.ConsoleUI.exe
 C:\Users\Barel\Documents\Visual Studio 2015\Projects\B18 Ex03 Barel 308275445 Avia 203339551\Ex03.ConsoleUI\obj\Debug\Ex03.ConsoleUI.pdb
+C:\Users\Barel\Documents\Visual Studio 2015\Projects\B18 Ex03 Barel 308275445 Avia 203339551\Ex03.ConsoleUI\bin\Debug\Ex02.ConsoleUtils.dll

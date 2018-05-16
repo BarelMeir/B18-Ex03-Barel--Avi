@@ -11,8 +11,8 @@ namespace Ex03.GarageLogic
         private Vehicle m_Vehicle;
         private Vehicle.eVehicleType m_VehicleType;
 
-        public Client(string i_ClientName, string i_ClientPhoneNumber, string io_ModelName,
-            string io_LicenseNumber, Vehicle.eVehicleType io_VehicleType, List<Vehicle.Wheel> io_Wheels,
+        internal Client(string i_ClientName, string i_ClientPhoneNumber, string io_ModelName,
+            string io_LicenseNumber, Vehicle.eVehicleType io_VehicleType, List<Wheel> io_Wheels,
             Engine.eEngineType io_EngineType, float ioEenergyLeft,
             List<object> io_UniqueParametersList)
         {
@@ -33,12 +33,12 @@ namespace Ex03.GarageLogic
             }
         }
 
-        public Vehicle Vehicle
+        internal Vehicle Vehicle
         {
             get { return m_Vehicle; }
         }
 
-        public string OwnerName
+        internal string OwnerName
         {
             get { return m_Name; }
         }

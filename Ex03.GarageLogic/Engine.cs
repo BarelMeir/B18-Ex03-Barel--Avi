@@ -27,7 +27,7 @@ namespace Ex03.GarageLogic
         private eEngineType m_EngineType;
         private eEnergyType m_EnergyType;
 
-        public Engine(eEngineType i_EngineType, float i_EnergyLeft, Vehicle.eVehicleType i_VehicleType)
+        internal Engine(eEngineType i_EngineType, float i_EnergyLeft, Vehicle.eVehicleType i_VehicleType)
         {
             m_EngineType = i_EngineType;
             m_CurrentLeftEnergy = i_EnergyLeft;
@@ -78,28 +78,28 @@ namespace Ex03.GarageLogic
             updateEnergyPercentge();
         }
 
-        public float MaxEnergyCapacity
+        internal float MaxEnergyCapacity
         {
             get { return m_MaxEnergyCapacity; }
         }
 
-        public float CurrentLeftEnergy
+        internal float CurrentLeftEnergy
         {
             get { return m_CurrentLeftEnergy; }
             set { m_CurrentLeftEnergy = value; }
         }
 
-        public float EnergyPercentgeLeft
+        internal float EnergyPercentgeLeft
         {
             get { return m_EnergyPercentgeLeft; }
         }
 
-        public eEngineType EngineType
+        internal eEngineType EngineType
         {
             get { return m_EngineType; }
         }
 
-        public eEnergyType EnergyType
+        internal eEnergyType EnergyType
         {
             get { return m_EnergyType; }
         }
@@ -135,8 +135,8 @@ namespace Ex03.GarageLogic
 
         public override string ToString()
         {
-            return string.Format("Energy Precentage Left: {0}% , Energy Type: {1}", EnergyPercentgeLeft,
-                m_EnergyType.ToString());
+            return string.Format("Energy Precentage Left: {0}%, Energy Type: {1}, Maximun Energy: {2}", EnergyPercentgeLeft,
+                m_EnergyType, m_MaxEnergyCapacity);
         }
     }
 }

@@ -39,12 +39,12 @@ namespace Ex03.GarageLogic
             }
         }
 
-        public eLicenseType LicenseType
+        internal eLicenseType LicenseType
         {
             get { return m_LicenseType; }
         }
 
-        public int MotorVolume
+        internal int MotorVolume
         {
             get { return m_MotorVolume; }
         }

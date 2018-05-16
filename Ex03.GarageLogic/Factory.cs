@@ -8,7 +8,7 @@ namespace Ex03.GarageLogic
     public class Factory
     {
         internal static Vehicle MakeVehicle(string io_ModelName,
-            string io_LicenseNumber, Vehicle.eVehicleType io_VehicleType, List<Vehicle.Wheel> io_Wheels,
+            string io_LicenseNumber, Vehicle.eVehicleType io_VehicleType, List<Wheel> io_Wheels,
             Engine.eEngineType io_EngineType, float ioEenergyLeft,
             List<object> io_UniqueParametersList)
         {
@@ -48,7 +48,7 @@ namespace Ex03.GarageLogic
         }
 
         private static Car makeCar(string io_ModelName,
-            string io_LicenseNumber, List<Vehicle.Wheel> io_Wheels,
+            string io_LicenseNumber, List<Wheel> io_Wheels,
             Engine.eEngineType io_EngineType, float ioEenergyLeft,
             List<object> io_UniqueParametersList)
         {
@@ -66,7 +66,7 @@ namespace Ex03.GarageLogic
         }
 
         private static Motorcycle makeMotorcycle(string io_ModelName,
-            string io_LicenseNumber, List<Vehicle.Wheel> io_Wheels,
+            string io_LicenseNumber, List<Wheel> io_Wheels,
             Engine.eEngineType io_EngineType, float ioEenergyLeft,
             List<object> io_UniqueParametersList)
         {
@@ -84,7 +84,7 @@ namespace Ex03.GarageLogic
         }
 
         private static Truck makeTruck(string io_ModelName,
-            string io_LicenseNumber, List<Vehicle.Wheel> io_Wheels,
+            string io_LicenseNumber, List<Wheel> io_Wheels,
             Engine.eEngineType io_EngineType, float ioEenergyLeft,
             List<object> io_UniqueParametersList)
         {
